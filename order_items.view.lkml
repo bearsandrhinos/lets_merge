@@ -90,6 +90,11 @@ view: order_items {
     sql: ${TABLE}.user_id ;;
   }
 
+  dimension: traffic_source_2 {
+    type: string
+    sql: ${users.traffic_source} ;;
+  }
+
   measure: count {
     type: count
     drill_fields: [detail*]

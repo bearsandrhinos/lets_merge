@@ -16,7 +16,9 @@ view: order_items {
       week,
       month,
       quarter,
-      year
+      year,
+      minute,
+      hour_of_day
     ]
     sql: ${TABLE}.created_at ;;
   }
@@ -94,6 +96,36 @@ view: order_items {
     type: string
     sql: ${users.traffic_source} ;;
   }
+
+
+
+  #dynamic parameter time period
+  parameter: date_granularity {
+    type: string
+    default_value: "Week"
+    allowed_value: { value: "Day" }
+    allowed_value: { value: "Week" }
+    allowed_value: { value: "Month" }
+    allowed_value: { value: "Quarter" }
+    allowed_value: { value: "Year" }
+  }
+
+  dimension: periods {
+  description: "Use this field in combination with the Date Granularity field for dynamic date filtering"
+  suggestions: ["Current Period","Previous period", "Last Year Period"]
+  type: string
+#   sql: case when ${delivered_date} <= date({% date_start period_start_date %}) AND ${delivered_date} > dateadd({% parameter date_granularity %}, -1, date({% date_start period_start_date %})) then 'Current Period'
+#             when ${delivered_date} <= dateadd({% parameter date_granularity %}, -1, date({% date_start period_start_date %})) AND ${delivered_date} > dateadd({% parameter date_granularity %}, -2, date({% date_start period_start_date %})) then 'Previous Period'
+#             when ${delivered_date} <= dateadd(year,-1, date({% date_start period_start_date %})) and ${delivered_date} > dateadd(year,-1, dateadd({% parameter date_granularity %}, -1, date({% date_start period_start_date %}))) then 'Last Year Period'
+#             else 'Other Period' end ;;
+
+  sql: case when ${delivered_date} <= current_date AND ${delivered_date} > dateadd({% parameter date_granularity %}, -1, current_date) then 'Current Period'
+  when ${delivered_date} <= dateadd({% parameter date_granularity %}, -1, current_date) AND ${delivered_date} > dateadd({% parameter date_granularity %}, -2, current_date) then 'Previous Period'
+  when ${delivered_date} <= dateadd(year,-1, current_date) and ${delivered_date} > dateadd(year,-1, dateadd({% parameter date_granularity %}, -1, current_date)) then 'Last Year Period'
+  end ;;
+
+}
+
 
   measure: count {
     type: count

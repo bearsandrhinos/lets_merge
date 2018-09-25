@@ -48,6 +48,12 @@ view: products {
     sql: ${TABLE}.sku ;;
   }
 
+  dimension: wrapper {
+    type:  string
+    sql: quote_literal("I am going to write this and hopefully it is long enough and it will wrap and then I will add the HTML") ;;
+#     html: <td nowrap> <p align="right"> {{rendered_value}} </p></td> ;;
+  }
+
   measure: count {
     type: count
     drill_fields: [id, name, distribution_centers.id, distribution_centers.name, inventory_items.count]

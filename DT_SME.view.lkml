@@ -9,7 +9,7 @@ view: dt_sme {
             users.city  AS city,
             COUNT(*) AS count_of_items
             FROM order_items  AS order_items
-LEFT JOIN orders  AS orders ON order_items.Order_Id = orders.id
+LEFT JOIN orders  AS orders ON order_items.order_id = orders.id
 LEFT JOIN users  AS users ON orders.user_id = users.id
 
 GROUP BY 1,2,3

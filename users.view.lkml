@@ -88,6 +88,21 @@ view: users {
     drill_fields: [id, first_name, last_name, events.count, order_items.count]
   }
 
+  measure: avg_age {
+    type: average
+    sql: ${age} ;;
+  }
+
+  measure: test_stuff {
+    type: number
+    sql: ${count}-${avg_age} ;;
+  }
+
+  measure: percent_age {
+    type: percent_of_total
+    sql: ${count} ;;
+  }
+
   measure: min_date {
     type: date_time
     sql:  min(${created_raw} ;;

@@ -21,7 +21,7 @@ explore: distribution_centers {}
 explore: events {
   join: users {
     type: left_outer
-    sql_on: ${events.user_ids} = ${users.id} ;;
+    sql_on: ${events.user_id} = ${users.id} ;;
     relationship: many_to_one
   }
 }
@@ -43,7 +43,7 @@ explore: events {
 explore: order_items {
   join: users {
     type: left_outer
-    sql_on: ${order_items.user_ids} = ${users.id} ;;
+    sql_on: ${order_items.user_id} = ${users.id} ;;
     relationship: many_to_one
   }
 

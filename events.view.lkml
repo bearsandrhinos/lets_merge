@@ -87,10 +87,10 @@ view: events {
     sql: ${TABLE}.uri ;;
   }
 
-  dimension: user_id {
+  dimension: user_ids {
     type: number
     # hidden: yes
-    sql: ${TABLE}.user_id ;;
+    sql: ${TABLE}.user_ids ;;
   }
 
   dimension: zip {

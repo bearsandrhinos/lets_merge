@@ -93,10 +93,10 @@ view: order_items {
     sql: ${TABLE}.status ;;
   }
 
-  dimension: user_id {
+  dimension: user_ids {
     type: number
     # hidden: yes
-    sql: ${TABLE}.user_id ;;
+    sql: ${TABLE}.user_ids ;;
   }
 
   dimension: traffic_source_2 {

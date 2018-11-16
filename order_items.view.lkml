@@ -140,10 +140,16 @@ view: order_items {
   }
 
   measure: total_sale_price {
-    hidden: yes
+#     hidden: yes
     type: sum
     sql: ${sale_price} ;;
     drill_fields: [id, sale_price,created_date]
+  }
+
+  measure: percent_of_cost {
+    type: number
+    sql: ${total_sale_price}/${inventory_items.total_cost} ;;
+    value_format_name: percent_2
   }
 
   measure: avg_sale_price {

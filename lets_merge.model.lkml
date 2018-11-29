@@ -1,4 +1,5 @@
 connection: "thelook_events"
+# connection: "snowflake_test"
 
 # include all the views
 include: "*.view"

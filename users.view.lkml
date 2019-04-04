@@ -78,6 +78,11 @@ view: users {
     sql: ${TABLE}.traffic_source ;;
   }
 
+  dimension: traffic_source_with_minus {
+    type: string
+    sql: CONCAT('-', ${traffic_source}) ;;
+  }
+
   dimension: zip {
     type: zipcode
     sql: ${TABLE}.zip ;;

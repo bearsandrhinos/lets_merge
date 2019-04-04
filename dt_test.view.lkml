@@ -1,6 +1,24 @@
-view: users {
-  sql_table_name: public.users ;;
+explore: dt_test {}
 
+view: dt_test {
+  # Or, you could make this view a derived table, like this:
+  derived_table: {
+    sql: SELECT
+        *
+      FROM users
+      where created_at BETWEEN TO_DATE(extract(year from {% date_start date_fil %}) || ' ' || 01::varchar || ' ' || 01::varchar, 'YYYY MM DD')
+      AND {% date_end date_fil %}
+
+      ;;
+
+
+  }
+
+filter: date_fil {
+  type: date
+}
+
+  # Define your dimensions and measures here, like this:
   dimension: id {
     primary_key: yes
     type: number
@@ -78,11 +96,6 @@ view: users {
     sql: ${TABLE}.traffic_source ;;
   }
 
-  dimension: traffic_source_with_minus {
-    type: string
-    sql: CONCAT('-', ${traffic_source}) ;;
-  }
-
   dimension: zip {
     type: zipcode
     sql: ${TABLE}.zip ;;
@@ -91,21 +104,6 @@ view: users {
   measure: count {
     type: count
     drill_fields: [id, first_name, last_name, events.count, order_items.count]
-  }
-
-  measure: avg_age {
-    type: average
-    sql: ${age} ;;
-  }
-
-  measure: test_stuff {
-    type: number
-    sql: ${count}-${avg_age} ;;
-  }
-
-  measure: percent_age {
-    type: percent_of_total
-    sql: ${count} ;;
   }
 
   measure: min_date {

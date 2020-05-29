@@ -1,6 +1,25 @@
 view: events {
   sql_table_name: public.events ;;
 
+  filter: demo_date_filter {
+    type: date
+  }
+
+  dimension: date_start {
+    type:  yesno
+    sql: ${created_date} >= {% date_start demo_date_filter %} ;;
+  }
+
+  dimension: date_end {
+    type: yesno
+    sql: ${created_date} >= {% date_end demo_date_filter %} ;;
+  }
+
+  dimension: date_within {
+    type: yesno
+    sql: {% condition demo_date_filter %} ${created_date} {% endcondition %} ;;
+  }
+
   dimension: id {
     primary_key: yes
     type: number

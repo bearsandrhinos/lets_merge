@@ -19,6 +19,7 @@ explore: company_list {}
 
 explore: distribution_centers {}
 
+
 explore: events {
   join: users {
     type: left_outer
@@ -42,6 +43,10 @@ explore: events {
 # }
 
 explore: order_items {
+  access_filter: {
+    field: users.state
+    user_attribute: state
+  }
   join: users {
     type: left_outer
     sql_on: ${order_items.user_id} = ${users.id} ;;

@@ -4,7 +4,11 @@ view: twilio_test {
   derived_table: {
     sql: SELECT
         'Peter'::text as name,
-        '+19702314889'::text as telephone
+        '+1 (970) 231-4889'::text as telephone
+        UNION
+        SELECT
+        'Brittni'::text as name,
+        '+14252817822'::text as telephone
       ;;
   }
 

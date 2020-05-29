@@ -47,6 +47,11 @@ view: users {
     sql: ${TABLE}.first_name ;;
   }
 
+  dimension: distinct_name {
+    type: string
+    sql: distinct ${first_name} ;;
+  }
+
   dimension: gender {
     type: string
     sql: ${TABLE}.gender ;;
@@ -71,6 +76,31 @@ view: users {
     type: string
     map_layer_name: us_states
     sql: ${TABLE}.state ;;
+  }
+
+  dimension: case_when {
+    case: {
+      when: {
+        sql: ${state} = "Alaska" ;;
+        label: "AK"
+      }
+    }
+    case: {
+      when: {
+        sql: ${state} = "Oregon" ;;
+        label: "OR"
+      }
+    }
+    sql: ${state} ;;
+    type: string
+  }
+
+  dimension: case_when_sql {
+    type: string
+    sql: case when ${state} = "Alaska" then "AK"
+            when ${state} = "Oregon" then "OR"
+            else ${state} end;;
+    suggest_dimension: state
   }
 
   dimension: traffic_source {

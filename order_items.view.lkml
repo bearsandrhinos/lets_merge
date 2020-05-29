@@ -5,11 +5,13 @@ view: order_items {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
+    html: [<a href="https://www-brain4.shave.io/customers/{{ value }}" target="brain">{{ value }}</a>] ;;
   }
 
   dimension_group: created {
     type: time
     timeframes: [
+      day_of_year,
       raw,
       time,
       date,
@@ -19,7 +21,8 @@ view: order_items {
       year,
       minute,
       hour_of_day,
-      fiscal_year
+      fiscal_year,
+      time_of_day
     ]
     sql: ${TABLE}.created_at ;;
   }
@@ -50,6 +53,7 @@ view: order_items {
   }
 
   dimension: order_id {
+    label: "hiragana (平仮名)"
     type: number
     sql: ${TABLE}.order_id ;;
   }
@@ -91,6 +95,7 @@ view: order_items {
   dimension: status {
     type: string
     sql: ${TABLE}.status ;;
+    html:  [<a href="https://www-brain4.shave.io/customers/{{ value }}" target="brain">{{ value }}</a>] ;;
   }
 
   dimension: user_id {
@@ -133,40 +138,45 @@ view: order_items {
 
 }
 
+dimension: included {
+  type: yesno
+  sql: ${order_id} IN ${users.id} ;;
+}
+
 
   measure: count {
     type: count
     drill_fields: [detail*]
   }
 
-  measure: total_sale_price {
-#     hidden: yes
-    type: sum
-    sql: ${sale_price} ;;
-    drill_fields: [id, sale_price,created_date]
-  }
+#   measure: total_sale_price {
+# #     hidden: yes
+#     type: sum
+#     sql: ${sale_price} ;;
+#     drill_fields: [id, sale_price,created_date]
+#   }
+#
+#   measure: percent_of_cost {
+#     type: number
+#     sql: ${total_sale_price}/${inventory_items.total_cost} ;;
+#     value_format_name: percent_2
+#   }
+#
+#   measure: avg_sale_price {
+#     type: average
+#     sql: ${sale_price} ;;
+#   }
+#
+#   measure: profit {
+#     type: number
+#     sql: ${total_sale_price} - ${inventory_items.total_cost} ;;
+#   }
 
-  measure: percent_of_cost {
-    type: number
-    sql: ${total_sale_price}/${inventory_items.total_cost} ;;
-    value_format_name: percent_2
-  }
-
-  measure: avg_sale_price {
-    type: average
-    sql: ${sale_price} ;;
-  }
-
-  measure: profit {
-    type: number
-    sql: ${total_sale_price} - ${inventory_items.total_cost} ;;
-  }
-
-  measure: percent_prof {
-    type: percent_of_total
-    sql: ${profit} ;;
-    drill_fields: [id, sale_price,created_date]
-  }
+#   measure: percent_prof {
+#     type: percent_of_total
+#     sql: ${profit} ;;
+#     drill_fields: [id, sale_price,created_date]
+#   }
 
   measure: percentile_normal {
     type: percentile
@@ -195,5 +205,14 @@ view: order_items {
       inventory_items.id,
       inventory_items.product_name
     ]
+  }
+
+}
+
+view: +order_items {
+
+  measure: total_sales {
+    type: sum
+    sql: ${sale_price} ;;
   }
 }

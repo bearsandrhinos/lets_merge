@@ -64,8 +64,8 @@ view: products {
     sql: ${retail_price} ;;
   }
 
-  measure: total_markup {
-    type: number
-    sql: ${order_items.total_sale_price} - ${total_retail} ;;
-  }
+#   measure: total_markup {
+#     type: number
+#     sql: ${order_items.total_sale_price} - ${total_retail} ;;
+#   }
 }
